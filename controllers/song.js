@@ -3,6 +3,7 @@ const path = require("path")
 const fs = require("fs");
 const Song = require("../models/song");
 const { join } = require("path");
+const User = require("../models/user")
 
 const randomStringGenerator = () => {
     let r = (Math.random() * 1000).toString(36)
@@ -127,6 +128,85 @@ exports.getSongs = (req, res) => {
             return res.status(200).json({
                 error: false,
                 songs: songs
+            })
+        }
+    })
+}
+exports.likeSong = (req, res) => {
+    const songId = req.body.songId;
+    const userId = req.body.userId
+
+    User.findByIdAndUpdate(userId, {
+        $push: {
+            likedSongs: songId
+        }
+    }, (err, user) => {
+        if (err) {
+            return res.status(500).json({
+                error: true,
+                message: "Unable to update the like status :("
+            })
+        }
+        else {
+            return res.status(200).json({
+                error: true,
+                message: "successfully liked"
+            })
+        }
+    })
+
+}
+exports.unlikeSong = (req, res) => {
+    console.log("Unlike")
+    User.findByIdAndUpdate(req.body.userId, {
+        $pull: {
+            likedSongs: req.body.songId
+        }
+    }, (err, user) => {
+        if (err) {
+            return res.status(400).json({
+                error: true,
+                message: err
+            })
+        }
+        else {
+            return res.status(200).json({
+                error: false
+            })
+        }
+    })
+}
+
+
+exports.getLikedSongsIds = (req, res) => {
+    User.findById(req.body.userId, (err, user) => {
+        if (err) {
+            return res.status(400).join({
+                error: true,
+                message: "unable to get liked list"
+            })
+        }
+        else {
+            return res.status(200).json({
+                error: false,
+                list: user.likedSongs
+            })
+        }
+    })
+}
+
+exports.getLikedSongsOfUser = (req, res) => {
+    User.findById(req.body.userId).populate('likedSongs').exec((err, songs) => {
+        if (err) {
+            return res.status(400).json({
+                error: true,
+                message: err
+            })
+        }
+        else {
+            return res.status(200).json({
+                error: false,
+                songs: songs.likedSongs
             })
         }
     })

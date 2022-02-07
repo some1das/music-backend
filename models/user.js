@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const ObjectId = require("mongoose").Schema.Types.ObjectId
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -11,7 +12,11 @@ const userSchema = mongoose.Schema({
     profilePic: {
         type: String
     },
-    interests: [{}],
+    likedSongs: [
+        {
+            type: ObjectId, ref: 'Song'
+        }
+    ],
     role: {
         type: Number,
         default: 0
