@@ -18,7 +18,9 @@
     "firebase-admin": "^10.0.1",
     "formidable": "^2.0.1",
     "google-auth-library": "^7.11.0",
-    "mongoose": "^6.1.4"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.4",
+    "query-string": "^7.1.1"
   },
   "engines": {
     "node": "16.13.1"

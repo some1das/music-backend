@@ -13,6 +13,7 @@ app.use(cors())
 const authRoutes = require("./routes/auth")
 const songRoutes = require("./routes/song");
 const userRoutes = require("./routes/user")
+const adminPlayListRoute = require("./routes/adminPlayList")
 const { getBucket } = require("./storage_initialize");
 //Hello world
 //MongoDB database connection
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes)
 app.use("/song", songRoutes)
 app.use("/user", userRoutes)
+app.use("/admin/playlist", adminPlayListRoute)
 
 app.listen(port, () => {
     console.log("Server has been started...")
