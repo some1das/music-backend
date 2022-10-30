@@ -76,3 +76,28 @@ exports.updateAdminPlayList = (req, res) => {
   });
   //   return res.status(200).json({ message: "hello" });
 };
+
+//Deleting admin created playList
+exports.deleteAdminPlayList = (req, res) => {
+  const playlistId = req.params.adminPlaylistId;
+
+  AdminPlayList.deleteOne({ _id: playlistId }, (err, data) => {
+    console.log(data);
+    //Handling no playlist exist case
+    if (data.deletedCount == 0)
+      return res.status(404).json({
+        error: true,
+        message: "Playlist doesn't exist",
+      });
+    if (err) {
+      return res.status(500).json({
+        error: true,
+        message: "Unable to delete the playlist",
+      });
+    }
+    return res.status(200).json({
+      error: false,
+      message: "deleted successfully",
+    });
+  });
+};

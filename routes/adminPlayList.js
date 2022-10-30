@@ -5,8 +5,9 @@ const {
   getSongsByPlayListIdParam,
   getSongsInAdminAPlayList,
   updateAdminPlayList,
+  deleteAdminPlayList,
 } = require("../controllers/adminPlayList");
-const { isSignedIn } = require("../controllers/auth");
+const { isSignedIn, isAdmin } = require("../controllers/auth");
 const { getUserByIdParam } = require("../controllers/auth");
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.get(
   isSignedIn,
   getSongsInAdminAPlayList
 );
+router.get("/delete/:userId/:adminPlaylistId", isAdmin, deleteAdminPlayList);
 router.post("/update/:userId/:adminPlayListId", updateAdminPlayList);
 
 module.exports = router;
